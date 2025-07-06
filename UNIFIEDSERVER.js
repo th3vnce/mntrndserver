@@ -8,7 +8,7 @@ const csvParser = require('csv-parser');
 const fetch = require('node-fetch');
 
 const app = express();
-const port = 25555; 
+const port = process.env.PORT || 25555; 
 
 app.use(cors());
 app.use(express.json());
