@@ -77,7 +77,7 @@ app.get('/fetch-shape', async (req, res) => {
         return res.status(400).json({ error: 'Trip ID is required' });
     }
 
-    const url = `https://emma.mav.hu//otp2-backend/otp/routers/default/index/trips/${tripId}/geometry`;
+    const url = `https://emma.mav.hu/otp2-backend/otp/routers/default/index/trips/${tripId}/geometry`;
 
     try {
         // Fetch polyline data
@@ -93,7 +93,7 @@ app.get('/fetch-shape', async (req, res) => {
             // Create GeoJSON from polyline points
             const geoJson = createGeoJson(data.points);
 
-           
+            
 
             // Return the GeoJSON response
             res.json(geoJson);
@@ -188,7 +188,8 @@ function createGeoJsonMav(vehicles) {
 }
 
 app.post('/fetch-mavrt', async (req, res) => {
-    const url = 'https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql';
+    // FIX: Removed double slash from URL
+    const url = 'https://emma.mav.hu/otp2-backend/otp/routers/default/index/graphql';
 
     // Fix GraphQL query
     const query = `{
@@ -254,7 +255,11 @@ app.post('/fetch-mavrt', async (req, res) => {
 
     try {
         const response = await axios.post(url, { query }, {
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                // FIX: Added Referer header to mimic a browser request
+                'Referer': 'https://emma.mav.hu/'
+            },
         });
 
         const data = response.data;
@@ -296,7 +301,8 @@ app.post('/fetch-mavrt', async (req, res) => {
 });
 
 app.post('/fetch-gysevrt', async (req, res) => {
-    const url = 'https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql';
+    // FIX: Removed double slash from URL
+    const url = 'https://emma.mav.hu/otp2-backend/otp/routers/default/index/graphql';
 
     
     const query = `{
@@ -355,7 +361,11 @@ app.post('/fetch-gysevrt', async (req, res) => {
 
     try {
         const response = await axios.post(url, { query }, {
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                // FIX: Added Referer header to mimic a browser request
+                'Referer': 'https://emma.mav.hu/'
+            },
         });
 
         const data = response.data;
@@ -443,7 +453,8 @@ function createGeoJsonVolan(vehicles) {
 }
 
 app.post('/fetch-volanrt', async (req, res) => {
-    const url = 'https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql';
+    // FIX: Removed double slash from URL
+    const url = 'https://emma.mav.hu/otp2-backend/otp/routers/default/index/graphql';
 
     const query = `{
         vehiclePositions(swLat: 45.7, swLon: 16.0, neLat: 48.5, neLon: 22.5) {
@@ -497,7 +508,11 @@ app.post('/fetch-volanrt', async (req, res) => {
 
     try {
         const response = await axios.post(url, { query }, {
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                // FIX: Added Referer header to mimic a browser request
+                'Referer': 'https://emma.mav.hu/'
+            },
         });
 
         const data = response.data;
@@ -520,7 +535,7 @@ app.post('/fetch-volanrt', async (req, res) => {
             console.log('GeoJSON saved to volanbusz.geojson');
             */
 
-           
+            
             res.json({
                 volanGeoJson,
             });
@@ -748,10 +763,15 @@ app.post('/fetch-info', async (req, res) => {
 
     try {
         const response = await axios.post(
-            'https://emma.mav.hu//otp2-backend/otp/routers/default/index/graphql',
+            // FIX: Removed double slash from URL
+            'https://emma.mav.hu/otp2-backend/otp/routers/default/index/graphql',
             { query },
             {
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    // FIX: Added Referer header to mimic a browser request
+                    'Referer': 'https://emma.mav.hu/'
+                },
             }
         );
 
