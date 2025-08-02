@@ -12,7 +12,7 @@ const app = express();
 const port = process.env.PORT || 25555;
 
 // Configure proxy trust for Render.com
-app.set('trust proxy', 1);
+app.set('trust proxy', true);
 
 // Enhanced CORS configuration
 app.use(cors({
@@ -23,18 +23,17 @@ app.use(cors({
 
 app.use(express.json());
 
-// Rate limiting configuration
+// Rate limiting configuration with proper IPv6 handling
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 30,
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator: (req) => {
-    const forwarded = req.headers['x-forwarded-for'];
-    return forwarded ? forwarded.split(',')[0].trim() : req.ip;
+  keyGenerator: (req, res) => {
+    // Use the rate-limiter's built-in IP detection
+    return rateLimit.ipKeyGenerator(req, res);
   }
 });
-
 // -------------------------- HELPER FUNCTIONS --------------------------
 
 function decodePolyline(encoded) {
@@ -792,3 +791,4 @@ app.listen(port, '0.0.0.0', () => {
 }).on('error', (err) => {
     console.error('Server failed to start:', err);
 });
+
