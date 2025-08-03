@@ -860,7 +860,7 @@ app.get('/', async (req, res) => {
                     headers: { 'Content-Type': 'application/json' }
                 };
                 // Add a dummy tripId for /fetch-shape to make it a valid request
-                const finalTestUrl = endpoint.path === '/fetch-shape' ? `${testUrl}?tripId=1:20238633` : testUrl;
+                const finalTestUrl = endpoint.path === '/fetch-shape' ? `${testUrl}?tripId=1:25773623` : testUrl;
 
                 const response = await fetch(finalTestUrl, fetchOptions);
                 const endTime = process.hrtime.bigint();
